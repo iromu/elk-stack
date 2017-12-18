@@ -4,9 +4,10 @@ services:
   logstash:
     build: ./logstash
     ports:
+      - 5002:5002
       - 5001:5001
       - 5000:5000
-    links:
+    depends_on:
       - elasticsearch
     environment:
       - LS_HEAP_SIZE=2048m
@@ -15,7 +16,6 @@ services:
     build: ./elasticsearch
     ports:
       - "9200:9200"
-      - "9300:9300"
     volumes:
       - ./data:/usr/share/elasticsearch/data
     environment:
@@ -30,3 +30,11 @@ services:
     links:
       - elasticsearch
 
+  logspout:
+    image: bekt/logspout-logstash
+    environment:
+      ROUTE_URIS: 'logstash://logstash:5002'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - logstash
