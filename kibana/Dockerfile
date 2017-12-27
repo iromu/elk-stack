@@ -1,4 +1,4 @@
-FROM docker.elastic.co/kibana/kibana:5.6.3
+FROM docker.elastic.co/kibana/kibana:6.1.1
 
 ADD config/kibana.yml /usr/share/kibana/config/
 

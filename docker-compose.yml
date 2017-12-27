@@ -9,11 +9,13 @@ services:
       - 5000:5000
     depends_on:
       - elasticsearch
+    links:
+      - elasticsearch
     environment:
       - LS_HEAP_SIZE=2048m
 
   elasticsearch:
-    build: ./elasticsearch
+    image: iromu/elasticsearch:latest
     ports:
       - "9200:9200"
     volumes:
@@ -22,19 +24,14 @@ services:
       ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
 
   kibana:
-    build: ./kibana
+    image: iromu/kibana:latest
     ports:
       - 5601:5601
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
     links:
       - elasticsearch
 
-  logspout:
-    image: bekt/logspout-logstash
-    environment:
-      ROUTE_URIS: 'logstash://logstash:5002'
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - logstash
+

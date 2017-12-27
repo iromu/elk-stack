@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+FROM docker.elastic.co/elasticsearch/elasticsearch:6.1.1
 
 ADD config/log4j2.properties /usr/share/elasticsearch/config/
 ADD config/elasticsearch.yml /usr/share/elasticsearch/config/
